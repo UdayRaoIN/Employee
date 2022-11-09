@@ -15,7 +15,7 @@ import com.india.Employee.Dto.ServiceResponse;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ServiceResponse<?> handleMethodArgumentException(MethodArgumentNotValidException exception){
+	public ServiceResponse<?> EmployeeBusinessServiceException(MethodArgumentNotValidException exception){
 		
 		List<ErrorDTO> errorlist=new ArrayList<>();
 		exception.getBindingResult().getFieldErrors().forEach(
@@ -25,6 +25,17 @@ public class GlobalExceptionHandler {
 		
 		ServiceResponse<?> serviceResponse= new ServiceResponse<>(HttpStatus.BAD_REQUEST,errorlist);
 		return serviceResponse;
+		
+	}
+	
+	@ExceptionHandler(EmployeeBusinessServiceException.class)
+	public ServiceResponse<?> EmployeeCustomBusinessServiceException(EmployeeBusinessServiceException exception){
+		List<ErrorDTO> errorlist=new ArrayList<>();
+		errorlist.add(new ErrorDTO(exception.getMessage()));
+		ServiceResponse<?> serviceResponse= new ServiceResponse<>(HttpStatus.BAD_REQUEST,errorlist);
+		return serviceResponse;
+	}
+	{
 		
 	}
 }
