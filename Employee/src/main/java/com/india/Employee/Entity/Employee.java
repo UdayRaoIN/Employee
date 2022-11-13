@@ -27,5 +27,5 @@ public class Employee {
 	private String name;
 	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy")
 	private Date DOJ;
-	private Float Salary;	
+	private Float salary;	
 }

@@ -1,11 +1,14 @@
 package com.india.Employee.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.india.Employee.Dto.EmployeeRequestDTO;
@@ -75,6 +78,37 @@ public class EmployeeService {
 		}
 		return AppUtils.mapEnityToDTO(emp);
 		
+	}
+	
+	public List<EmployeeResponseDTO> findByNameAndSal(String name,float salary) {
+		List<Employee> emp=null;
+		try {
+			emp=empRepo.findByNameAndSalary(name, salary);
+			if(!emp.isEmpty()) {
+			return StreamSupport.stream(emp.spliterator(), false).map(x->AppUtils.mapEnityToDTO(x)).collect(Collectors.toList());
+			}
+			else {
+				throw new EmployeeBusinessServiceException("retrieval failed !! Please contact admin@info.com");
+			}
+		}
+		catch (Exception e) {
+			throw new EmployeeBusinessServiceException("retrieval failed !! Please contact admin@info.com");
+		}
+	}
+	
+	public List<EmployeeResponseDTO> findEmployeeByName(String name){
+		List<Employee> emp=null;
+		try {
+			emp=empRepo.findEmployeeByName(name);
+			return StreamSupport.stream(emp.spliterator(), false).map(AppUtils::mapEnityToDTO).collect(Collectors.toList());
+		}
+		catch (Exception e) {
+			throw new EmployeeBusinessServiceException("retrieval failed !! Please contact admin@info.com");
+		}
+	}
+	
+	public Page<Employee> getAllDetailsPage(int offset,int limit){
+		return empRepo.findAll(PageRequest.of(offset, limit));
 	}
 
 }
