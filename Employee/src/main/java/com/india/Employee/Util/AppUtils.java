@@ -1,5 +1,6 @@
 package com.india.Employee.Util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.india.Employee.Dto.EmployeeRequestDTO;
 import com.india.Employee.Dto.EmployeeResponseDTO;
 import com.india.Employee.Entity.Employee;
@@ -21,5 +22,15 @@ public class AppUtils {
 		employeeResponseDTO.setDOJ(employee.getDOJ());
 		employeeResponseDTO.setSalary(employee.getSalary());
 		return employeeResponseDTO;
+	}
+	
+	public static String convertObjectTOJson(Object object) {
+		try {
+			return new ObjectMapper().writeValueAsString(object);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
